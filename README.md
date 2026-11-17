@@ -2,6 +2,10 @@
 
 A buildless, responsive HandshakeAI competition showcase for a living iPhone wallpaper. Serve `dist/` with any static HTTP server. The iPhone automation runs daily at 10:00 AM, usually after the morning weigh-in.
 
+## Vercel deployment
+
+Import the repository with its root directory unchanged. The root `vercel.json` selects the Other framework preset and publishes `dist/`, which contains `index.html` and all website assets. No build or install step is needed. A deployment that serves the repository root instead will show a 404 at `/` because the homepage is inside `dist/`.
+
 ## Content and provenance
 
 - Six original images were supplied by the user and are included under `dist/assets/`. A supplied recording was used only as reference; the video is not included in the site or repository.
