@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eeede8">
+  <meta name="description" content="A HandshakeAI competition project: an iPhone wallpaper for my weight-loss journey, rebuilt daily at 10 AM with Apple Health, Gemini, and Shortcuts.">
+  <title>Living Wallpaper — HandshakeAI Competition</title>
+  <link rel="icon" href="./assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./automation.css">
+  <link rel="stylesheet" href="./editorial.css">
+  <script src="./quotes.js" defer></script>
+  <script src="./automation.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a href="#" class="wordmark" aria-label="Living Wallpaper home">LW<span class="wordmark-dot">↗</span></a>
+    <span class="header-note">HandshakeAI competition project</span>
+    <a class="header-link" href="#chapters">Explore the project <span aria-hidden="true">↘</span></a>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">HandshakeAI competition / 2026</p>
+        <h1 id="hero-title">Living<br>Wallpaper.</h1>
+        <p class="hero-intro">My weight-loss journey, on the screen I see every day.</p>
+        <p class="hero-description">A background that changes with my progress. Built with Gemini and Apple Shortcuts to bring my starting weight, current weight, goal, countdown, and a practical daily reminder onto my iPhone.</p>
+        <a href="#chapters" class="primary-link">Inside the project <span aria-hidden="true">↘</span></a>
+        <div class="daily-label"><span class="daily-marker" aria-hidden="true"></span><strong>Daily / 10:00 AM</strong><span>Usually after my morning weigh-in.</span></div>
+      </div>
+      <div class="showcase">
+        <div class="showcase-label">The original wallpapers<span class="edition">01 / 03</span></div>
+        <div class="phone-stage" aria-label="Wallpaper gallery">
+          <button class="phone phone-left" data-phone="topographic" aria-label="Select the topographic wallpaper"><img src="./assets/topographic-lockscreen.jpg" alt="Topographic iPhone lock screen with weight progress, a daily quote, and 87 days left" width="942" height="2048"><span class="phone-glint"></span></button>
+          <button class="phone phone-center" data-phone="mountains" aria-label="Enlarge the selected mountains wallpaper"><img src="./assets/mountains-lockscreen.jpg" alt="Emerald mountain iPhone lock screen: initial 225, current 223.2, goal 205, and a motivational note" width="942" height="2048"><span class="phone-glint"></span></button>
+          <button class="phone phone-right" data-phone="tunnel" aria-label="Select the tunnel wallpaper"><img src="./assets/tunnel-lockscreen.jpg" alt="Neon green tunnel iPhone lock screen with a walking quote and weight progress" width="942" height="2048"><span class="phone-glint"></span></button>
+          <button class="enlarge" id="enlarge" aria-label="View selected wallpaper full size"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button>
+        </div>
+        <div class="gallery-tabs" role="group" aria-label="Choose a wallpaper"><button data-theme="mountains" class="active" aria-pressed="true">01 <span>Mountains</span></button><button data-theme="topographic" aria-pressed="false">02 <span>Topography</span></button><button data-theme="tunnel" aria-pressed="false">03 <span>Tunnel</span></button></div>
+        <p class="theme-caption" id="theme-caption" aria-live="polite">A reminder that the ups and downs are part of the journey.</p>
+      </div>
+    </section>
+
+    <section class="snapshot wrap" aria-label="Progress shown in the original project">
+      <div class="snapshot-label"><span class="tiny-caps">Project snapshot</span><p>From my original<br>lock screen.</p></div>
+      <div class="snapshot-stat"><span>Initial weight</span><p>225 <small>lb</small></p></div>
+      <div class="snapshot-stat current"><span>Current weight</span><p>223.2 <small>lb</small></p><div class="mini-progress" aria-hidden="true"><i></i></div></div>
+      <div class="snapshot-stat"><span>My goal</span><p>205 <small>lb</small></p></div>
+      <div class="snapshot-note"><strong>87</strong><p>Days left<br><span>At the time of capture</span></p></div>
+    </section>
+
+    <section class="chapters wrap" id="chapters" aria-labelledby="chapters-title">
+      <div class="section-heading"><h2 id="chapters-title">Inside the project</h2><p>Select a chapter ↘</p></div>
+      <div class="chapter-grid">
+        <button class="chapter-card" data-open="story"><span class="card-art"><img src="./assets/art-story.webp" alt="" width="180" height="180"></span><span class="card-title">My Story</span></button>
+        <button class="chapter-card" data-open="gemini"><span class="card-art"><img src="./assets/art-gemini.webp" alt="" width="180" height="180"></span><span class="card-title">The Gemini Process</span></button>
+        <button class="chapter-card" data-open="automation"><span class="card-art"><img src="./assets/art-automation.webp" alt="" width="180" height="180"></span><span class="card-title">The Automation</span></button>
+        <button class="chapter-card" data-open="quotes"><span class="card-art"><img src="./assets/art-quotes.webp" alt="" width="180" height="180"></span><span class="card-title">Quotes & Tips</span></button>
+        <button class="chapter-card" data-open="design"><span class="card-art"><img src="./assets/art-design.webp" alt="" width="180" height="180"></span><span class="card-title">The Backgrounds</span></button>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer wrap"><a href="#" class="footer-brand">Living Wallpaper ↗</a><span>HandshakeAI competition project</span><span>2026</span></footer>
+
+  <dialog id="chapter-dialog" class="chapter-dialog"><div class="dialog-shell"><button class="close-dialog" aria-label="Close chapter">✕</button><div id="chapter-content"></div></div></dialog>
+  <dialog id="wallpaper-dialog" class="wallpaper-dialog"><div class="wallpaper-shell"><button class="close-dialog" aria-label="Close wallpaper">✕</button><div class="wallpaper-view"><button id="previous-wallpaper" class="gallery-arrow" aria-label="Previous wallpaper">←</button><img id="full-wallpaper" src="./assets/mountains-lockscreen.jpg" alt="Mountains wallpaper"><button id="next-wallpaper" class="gallery-arrow" aria-label="Next wallpaper">→</button></div><div class="viewer-footer"><div><span class="tiny-caps" id="viewer-number">01 / MOUNTAINS</span><p id="viewer-caption">The ups and downs.</p></div><div class="viewer-actions"><div class="view-toggle" role="group" aria-label="Wallpaper version"><button data-view="lockscreen" class="active" aria-pressed="true">On my phone</button><button data-view="template" aria-pressed="false">Blank template</button></div><a id="download-wallpaper" href="./assets/mountains-template.png" download="mountains-wallpaper.png" aria-label="Download the mountains wallpaper template">Download template <span aria-hidden="true">↓</span></a></div></div></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
