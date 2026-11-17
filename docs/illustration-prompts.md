@@ -1,6 +1,6 @@
 # Illustration prompts
 
-Created with the built-in image generation tool. Original selected PNGs are preserved locally in `artwork/`. Optimized web exports are in `dist/assets/art-*.webp`; earlier colorful variants were discarded.
+Archived design experiment, replaced by regular SVG icons. Created with the built-in image generation tool. Original selected PNGs are preserved locally in `artwork/`; the generated illustrations are no longer used by the website.
 
 ## story
 

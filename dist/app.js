@@ -43,10 +43,6 @@ function renderWallpaper(){
   image.alt=`${theme.name} ${wallpaperView==='lockscreen'?'original iPhone lock screen':'blank wallpaper template'}`;
   document.querySelector('#viewer-number').textContent=`${theme.number} / ${theme.name.toUpperCase()}`;
   document.querySelector('#viewer-caption').textContent=theme.short;
-  const download=document.querySelector('#download-wallpaper');
-  download.href=`./assets/${activeTheme}-template.png`;
-  download.download=`${activeTheme}-wallpaper.png`;
-  download.setAttribute('aria-label',`Download the ${theme.name.toLowerCase()} wallpaper template`);
   document.querySelectorAll('[data-view]').forEach(button=>{
     const selected=button.dataset.view===wallpaperView;
     button.classList.toggle('active',selected);
@@ -80,11 +76,9 @@ const chapters={
     <ol class="process-list">${step('01','Start with the real problem','I wanted a creative reminder that could help me stay accountable. The starting point was my own experience, rather than a wallpaper style.')}${step('02','Imagine something that changes','Together, we arrived at using Apple Shortcuts to make the background feel alive: something that reflects my progress instead of staying the same.')}${step('03','Pair a thought with an action','I also used Gemini to create a collection of motivational quotes paired with health and habit tips. Each note gives me a thought to carry and something concrete to do.')}${step('04','Give the journey a visual language','Mountains, topographic lines, and a tunnel each express a different part of the process. The result is three visual directions with the same personal purpose.')}</ol>
     <blockquote class="pullquote">The idea became useful when it became part of my everyday environment.</blockquote>`,
   automation:()=>heading('03','The system','The daily automation.','My scale syncs to its companion app, which updates Apple Health. Every day at 10:00 AM, usually after my morning weigh-in, the Shortcut rebuilds my wallpaper.')+window.renderAutomation()+`<p class="source-note">The progress shown on this site is a project snapshot: 225 lb initially, 223.2 lb currently, a 205 lb goal, and 87 days left. The daily data connection runs on my iPhone.</p>`,
-  quotes:()=>heading('04','The daily nudge','A little perspective.<br><em>One thing to do.</em>','The original Gemini-generated collection: a motivational thought paired with a practical action, ready to become part of the wallpaper.')+`
-    <div class="quote-toolbar"><label class="search-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><input id="quote-search" type="search" placeholder="Search a quote, tip, or author…" aria-label="Search quotes, tips, and authors"></label><button class="shuffle-note" id="shuffle-note">Surprise me ↗</button></div>
-    <div class="quote-filters" role="group" aria-label="Filter notes by topic">${['All notes','Habits','Mindset','Nourishment','Movement','Perspective'].map((category,index)=>`<button data-category="${category}" class="${index===0?'active':''}" aria-pressed="${index===0}">${category}</button>`).join('')}</div><p class="quote-count" id="quote-count" role="status" aria-live="polite"></p><div id="quote-grid" class="quote-grid"></div><p class="source-note">Original project archive. Wording and attributions are preserved as supplied; attributions have not been independently verified. These are personal motivational notes, not individualized medical guidance.</p>`,
+  quotes:()=>'<h2 class="modal-heading quote-list-title" id="chapter-heading">Quote List</h2><ol class="quote-list">'+window.projectNotes.map(note=>`<li class="quote-line"><span class="quote-line-number">${String(note.id).padStart(2,'0')}</span><div class="quote-line-thought">${escapeHTML(note.quote)}${note.author?' <span class="quote-line-author">— '+escapeHTML(note.author)+'</span>':''}</div><p class="quote-line-tip">${escapeHTML(note.tip)}</p></li>`).join('')+'</ol>',
   design:()=>heading('05','The visual language','Three backgrounds.<br><em>Three ways to see the journey.</em>','The emerald palette ties the collection together. Each landscape gives the same daily reminder a different meaning.')+`
-    <div class="design-grid">${themeOrder.map(key=>{const theme=themes[key];return `<article class="design-item"><button class="design-image-button" data-preview="${key}" aria-label="View ${theme.name.toLowerCase()} wallpaper"><img class="design-image" src="./assets/${key}-template.png" alt="${theme.name} blank emerald wallpaper template" loading="lazy"></button><h3>${theme.number} / ${theme.name}</h3><p class="design-meaning">${theme.meaning}</p><p>${theme.description}</p><a class="template-link" href="./assets/${key}-template.png" download="${key}-wallpaper.png">Download template ↓</a></article>`;}).join('')}</div><p class="source-note">The three blank templates and the completed iPhone lock screens are the original project assets. Click a design to compare them.</p>`
+    <div class="design-grid">${themeOrder.map(key=>{const theme=themes[key];return `<article class="design-item"><button class="design-image-button" data-preview="${key}" aria-label="View ${theme.name.toLowerCase()} wallpaper"><img class="design-image" src="./assets/${key}-template.png" alt="${theme.name} blank emerald wallpaper template" loading="lazy"></button><h3>${theme.number} / ${theme.name}</h3><p class="design-meaning">${theme.meaning}</p><p>${theme.description}</p></article>`;}).join('')}</div><p class="source-note">The three blank templates and the completed iPhone lock screens are the original project assets. Click a design to compare them.</p>`
 };
 
 function openChapter(key){
@@ -92,7 +86,6 @@ function openChapter(key){
   chapterDialog.setAttribute('aria-labelledby','chapter-heading');
   chapterDialog.showModal();
   chapterDialog.scrollTop=0;
-  if(key==='quotes')setupQuotes();
   if(key==='automation')window.setupAutomation();
   if(key==='design')chapterContent.querySelectorAll('[data-preview]').forEach(button=>button.addEventListener('click',()=>{chapterDialog.close();openWallpaper(button.dataset.preview);}));
 }
@@ -103,37 +96,3 @@ for(const dialog of [chapterDialog,wallpaperDialog]){
   dialog.addEventListener('close',()=>dialog.querySelectorAll('video').forEach(video=>video.pause()));
 }
 
-let quoteCategory='All notes';
-let quoteQuery='';
-const normalize=text=>text.normalize('NFKD').replace(/[’‘]/g,"'").toLowerCase();
-function filteredNotes(){return window.projectNotes.filter(note=>(quoteCategory==='All notes'||note.category===quoteCategory)&&normalize(`${note.quote} ${note.tip} ${note.author}`).includes(normalize(quoteQuery)));}
-function renderQuotes(){
-  const notes=filteredNotes();
-  document.querySelector('#quote-count').textContent=`${notes.length} of ${window.projectNotes.length} notes${quoteCategory!=='All notes'?' · '+quoteCategory:''}`;
-  document.querySelector('#quote-grid').innerHTML=notes.length?notes.map(note=>`<article class="quote-item" id="note-${note.id}"><header><span>${String(note.id).padStart(2,'0')} / ${escapeHTML(note.category)}</span><span>Thought → action</span></header><blockquote>“${escapeHTML(note.quote)}”</blockquote><p class="quote-author">${note.author?'— '+escapeHTML(note.author):'From the original collection'}</p><p class="quote-tip"><b>The action</b>${escapeHTML(note.tip)}</p><button class="copy-note" data-copy="${note.id}">Copy this note ↗</button></article>`).join(''):'<p class="no-results">No notes match that search. Try another word or choose a different topic.</p>';
-  document.querySelectorAll('[data-copy]').forEach(button=>button.addEventListener('click',async()=>{
-    const note=window.projectNotes.find(note=>note.id===Number(button.dataset.copy));
-    const text=`“${note.quote}”${note.author?' — '+note.author:''}\n\n${note.tip}`;
-    try{await navigator.clipboard.writeText(text);showToast('Note copied. One small action, ready to go.');}catch{button.textContent='Select the note text to copy';}
-  }));
-}
-function setupQuotes(){
-  quoteCategory='All notes';quoteQuery='';renderQuotes();
-  document.querySelector('#quote-search').addEventListener('input',event=>{quoteQuery=event.target.value;renderQuotes();});
-  document.querySelectorAll('[data-category]').forEach(button=>button.addEventListener('click',()=>{
-    quoteCategory=button.dataset.category;
-    document.querySelectorAll('[data-category]').forEach(other=>{const selected=other===button;other.classList.toggle('active',selected);other.setAttribute('aria-pressed',String(selected));});
-    renderQuotes();
-  }));
-  document.querySelector('#shuffle-note').addEventListener('click',()=>{
-    const notes=filteredNotes();
-    if(!notes.length){showToast('Try another search to find a note.');return;}
-    const note=notes[Math.floor(Math.random()*notes.length)];
-    document.querySelectorAll('.quote-item.highlight').forEach(item=>item.classList.remove('highlight'));
-    const item=document.querySelector(`#note-${note.id}`);item.classList.add('highlight');
-    item.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'center'});
-    item.setAttribute('tabindex','-1');item.focus({preventScroll:true});
-  });
-}
-let toastTimer;
-function showToast(message){const toast=document.querySelector('#toast');toast.textContent=message;toast.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('visible'),3200);}
