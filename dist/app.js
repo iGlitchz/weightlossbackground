@@ -10,6 +10,7 @@ let activeTheme = 'mountains';
 let wallpaperView = 'lockscreen';
 const chapterDialog = document.querySelector('#chapter-dialog');
 const wallpaperDialog = document.querySelector('#wallpaper-dialog');
+wallpaperDialog.setAttribute('aria-label','Fullscreen wallpaper gallery');
 const chapterContent = document.querySelector('#chapter-content');
 const escapeHTML = value => String(value).replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
 
@@ -19,7 +20,7 @@ function selectTheme(key) {
   document.querySelectorAll('[data-phone]').forEach(phone=>{
     const selected=phone.dataset.phone===key;
     phone.className='phone '+(selected?'phone-center':phone.dataset.phone===others[0]?'phone-left':'phone-right');
-    phone.setAttribute('aria-label',selected?`Enlarge the selected ${themes[key].name.toLowerCase()} wallpaper`:`Select the ${themes[phone.dataset.phone].name.toLowerCase()} wallpaper`);
+    phone.setAttribute('aria-label',`Enlarge the ${themes[phone.dataset.phone].name.toLowerCase()} wallpaper`);
   });
   document.querySelectorAll('[data-theme]').forEach(button=>{
     const selected=button.dataset.theme===key;
@@ -32,8 +33,7 @@ function selectTheme(key) {
 
 document.querySelectorAll('[data-theme]').forEach(button=>button.addEventListener('click',()=>selectTheme(button.dataset.theme)));
 document.querySelectorAll('[data-phone]').forEach(phone=>phone.addEventListener('click',()=>{
-  if(phone.dataset.phone===activeTheme) openWallpaper();
-  else selectTheme(phone.dataset.phone);
+  openWallpaper(phone.dataset.phone);
 }));
 
 function renderWallpaper(){
@@ -61,7 +61,15 @@ document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener
 function cycleWallpaper(direction){const index=themeOrder.indexOf(activeTheme);selectTheme(themeOrder[(index+direction+themeOrder.length)%themeOrder.length]);}
 document.querySelector('#previous-wallpaper').addEventListener('click',()=>cycleWallpaper(-1));
 document.querySelector('#next-wallpaper').addEventListener('click',()=>cycleWallpaper(1));
-wallpaperDialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft')cycleWallpaper(-1);if(event.key==='ArrowRight')cycleWallpaper(1);});
+wallpaperDialog.addEventListener('keydown',event=>{
+  if(event.key==='ArrowLeft'||event.key==='ArrowRight'){
+    event.preventDefault();
+    cycleWallpaper(event.key==='ArrowLeft'?-1:1);
+  }
+});
+wallpaperDialog.addEventListener('click',event=>{
+  if(event.target===wallpaperDialog||event.target.classList.contains('wallpaper-shell')||event.target.classList.contains('wallpaper-view'))wallpaperDialog.close();
+});
 
 const heading=(number,label,title,intro)=>`<p class="modal-eyebrow">Chapter ${number} / ${label}</p><h2 class="modal-heading" id="chapter-heading">${title}</h2><p class="modal-intro">${intro}</p>`;
 const step=(number,title,body)=>`<li><span class="step-number">${number}</span><div><h3>${title}</h3><p>${body}</p></div></li>`;

@@ -11,7 +11,7 @@ A buildless, responsive HandshakeAI competition showcase for a living iPhone wal
 
 ## Interactions
 
-Select among three wallpaper themes. Enlarge the images and switch between the completed lock screen and blank template. Five chapter cards open accessible native dialogs. The quote list shows all 98 quote-and-tip pairs in a scrollable series of horizontal rows. The automation chapter reconstructs all 14 visible Shortcut actions in one continuous flow; the sticky navigation tracks the current section while scrolling. Truncated variable names are preserved as shortened labels. This is a walkthrough, not a runnable Shortcut.
+Select among three wallpaper themes. Clicking any phone opens that wallpaper almost the full height of the viewport, without a surrounding panel. Switch images with the arrows or keyboard arrow keys; close with Escape, the close button, or a click outside the image. Five chapter cards open accessible native dialogs. The quote list shows all 98 quote-and-tip pairs in a scrollable series of horizontal rows. The automation chapter reconstructs all 14 visible Shortcut actions in one continuous flow; the sticky navigation tracks the current section while scrolling. Truncated variable names are preserved as shortened labels. This is a walkthrough, not a runnable Shortcut.
 
 The site uses one font family, Barlow Condensed, with system fallbacks, simple SVG icons, and a dark emerald contour background that fills the viewport. No build tools, accounts, tracking, or runtime dependencies are required.
 
